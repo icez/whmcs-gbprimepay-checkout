@@ -1,0 +1,15 @@
+{
+    "name": "whmcs/gbprimepay-checkout",
+    "description": "GBPrimePay Checkout for WHMCS",
+    "homepage": "https://github.com/GBPrimepay/whmcs-gbprimepay-checkout",
+    "require": {
+        "php": ">=7.0",
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
+    "version": "1.0.0",
+    "license": [
+        "OSL-3.0",
+        "proprietary"
+    ]
+}
