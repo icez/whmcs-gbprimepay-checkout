@@ -12,7 +12,6 @@ function gbp_instances( $instances ) {
 
     'URL_CHECKOUT_TEST' => 'https://checkout.globalprimepay.com',
     'URL_CHECKOUT_LIVE' => 'https://checkout.gbprimepay.com',
-    'URL_CHECKOUT_LIVE' => 'https://checkout.beprovider.net',
 
     'URL_MERCHANT_TEST' => 'https://api.globalprimepay.com/getmerchantinfo',
     'URL_MERCHANT_LIVE' => 'https://api.gbprimepay.com/getmerchantinfo',
