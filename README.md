@@ -1,5 +1,3 @@
-# whmcs-gbprimepay-checkout
-GBPrimePay Checkout for WHMCS
 <img src="https://www.globalprimepay.com/dist/images/logo.svg" width="130" />
 
 # GBPrimePay Payment
