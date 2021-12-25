@@ -15,7 +15,7 @@ Install GBPrimePay Checkout for WHMCS
 5) Navigate to "Wrench" icon on upper right corner ```Configuration > System Settings```
 7) Go to ```Payment Gateways```
 8) Click the ```All Payment Gateways``` tab
-- To install internal embedded payment gateway, click ```GBPrimePay Checkout```
+- To install GBPrimePay Checkout , click ```GBPrimePay Checkout```
 9) Enter required details on the ```Manage Existing Gateways tab```
 10) GBPrimePay Checkout Settings on the ```GBPrimePay Checkout```
 
