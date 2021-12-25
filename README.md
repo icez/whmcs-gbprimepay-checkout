@@ -4,9 +4,8 @@
 
 ## Installation
 
-#### Step 1) -  Install GBPrimePay Checkout
+#####  Install GBPrimePay Checkout
 
-##### Manual Installation  (not recommended)
 Install GBPrimePay Checkout for WHMCS
 1) Download the GBPrimePay Checkout for WHMCS .zip file of the latest release from here: https://github.com/GBPrimepay/whmcs-gbprimepay-checkout/releases
 2) Extract the files within your installation location under to folder ```/modules/```
@@ -15,7 +14,7 @@ Install GBPrimePay Checkout for WHMCS
 5) Navigate to "Wrench" icon on upper right corner ```Configuration > System Settings```
 7) Go to ```Payment Gateways```
 8) Click the ```All Payment Gateways``` tab
-- To install GBPrimePay Checkout , click ```GBPrimePay Checkout```
+## - To install GBPrimePay Checkout , click ```GBPrimePay Checkout```
 9) Enter required details on the ```Manage Existing Gateways tab```
 10) GBPrimePay Checkout Settings on the ```GBPrimePay Checkout```
 
