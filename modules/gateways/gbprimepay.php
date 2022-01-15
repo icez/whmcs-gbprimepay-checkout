@@ -172,10 +172,10 @@ function gbprimepay_config()
             'Default' => '3, 4, 5, 6, 7, 8, 9, 10',
         ),
         'thanachart_installment_term' => array(
-            'FriendlyName' => 'THANACHART<br><br><br>',
+            'FriendlyName' => 'TTB<br><br><br>',
             'Type' => 'text',
             'Size' => '26',
-            'Description' => '<br>Thanachart Bank Public Company Limited. <br>Installment Terms. default: <b>3, 4, 6, 10</b>',
+            'Description' => '<br>TMBThanachart Bank Public Company Limited. <br>Installment Terms. default: <b>3, 4, 6, 10</b>',
             'Default' => '3, 4, 6, 10',
         ),
         'ayudhya_installment_term' => array(
@@ -198,6 +198,13 @@ function gbprimepay_config()
             'Size' => '26',
             'Description' => '<br>Siam Commercial Bank Public Company Limited. <br>Installment Terms. default: <b>3, 4, 6, 10</b>',
             'Default' => '3, 4, 6, 10',
+        ),
+        'bbl_installment_term' => array(
+            'FriendlyName' => 'SCB<br><br><br>',
+            'Type' => 'text',
+            'Size' => '26',
+            'Description' => '<br>Bangkok Bank Public Company Limited. <br>Installment Terms. default: <b>3, 4, 6, 8, 9, 10</b>',
+            'Default' => '3, 4, 6, 8, 9, 10',
         ),
         'gbp_qrcode_row' => array(
 			"FriendlyName" => "3.)", 
@@ -498,6 +505,7 @@ if ($params['gbp_installment_enabled'] !== '') {
         "ayudhya_installment_term" => $params['ayudhya_installment_term'],
         "firstchoice_installment_term" => $params['firstchoice_installment_term'],
         "scb_installment_term" => $params['scb_installment_term'],
+        "bbl_installment_term" => $params['bbl_installment_term'],
     ); 
 }
 if ($params['gbp_qrcode_enabled'] !== '') {

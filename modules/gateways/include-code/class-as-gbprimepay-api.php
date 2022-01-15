@@ -100,6 +100,9 @@ class AS_Gbprimepay_API {
         case 'scb':
           $pass_array = array(3, 4, 6, 10);
         break;
+        case 'bbl':
+          $pass_array = array(3, 4, 6, 8, 9, 10);
+        break;
       }
       // print_r($pass_array);
       // exit;
@@ -134,7 +137,7 @@ class AS_Gbprimepay_API {
           $echoterm .= '<optgroup label="TextValue[\'Krung Thai Bank Public Company Limited.\',\'006\']">';
         break;
         case 'thanachart':
-          $echoterm .= '<optgroup label="TextValue[\'Thanachart Bank Public Company Limited.\',\'065\']">';
+          $echoterm .= '<optgroup label="TextValue[\'TMBThanachart Bank Public Company Limited.\',\'011\']">';
         break;
         case 'ayudhya':
           $echoterm .= '<optgroup label="TextValue[\'Bank of Ayudhya Public Company Limited.\',\'025\']">';
@@ -144,6 +147,9 @@ class AS_Gbprimepay_API {
         break;
         case 'scb':
           $echoterm .= '<optgroup label="TextValue[\'Siam Commercial Bank Public Company Limited.\',\'014\']">';
+        break;
+        case 'bbl':
+          $echoterm .= '<optgroup label="TextValue[\'Bangkok Bank Public Company Limited.\',\'002\']">';
         break;
       }
 
