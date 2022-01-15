@@ -200,7 +200,7 @@ function gbprimepay_config()
             'Default' => '3, 4, 6, 10',
         ),
         'bbl_installment_term' => array(
-            'FriendlyName' => 'SCB<br><br><br>',
+            'FriendlyName' => 'BBL<br><br><br>',
             'Type' => 'text',
             'Size' => '26',
             'Description' => '<br>Bangkok Bank Public Company Limited. <br>Installment Terms. default: <b>3, 4, 6, 8, 9, 10</b>',
