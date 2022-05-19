@@ -55,9 +55,11 @@ $invoiceId = checkCbInvoiceID($order_id, $gatewayParams['name']);
 $paymentAmount = $payload->{'amount'};
 $paymentFee = 0;
 $ordertxt = '';
-if ($invoiceId){$ordertxt = $invoiceId;}
+if ($invoiceId) {
+    $ordertxt = $invoiceId;
+}
 
-if($paymentType=='Q'){
+if ($paymentType=='Q') {
 // Qr Code
 if ( isset( $payload->{'resultCode'} ) ) {
     if ($payload->{'resultCode'} == '00') {

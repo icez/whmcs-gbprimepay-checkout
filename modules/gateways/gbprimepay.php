@@ -447,123 +447,123 @@ function gbprimepay_link($params)
     } else {
         $checkout_url = gbp_instances('URL_CHECKOUT_LIVE');
     }
-$amount = $params['amount'];
-$checkout_amount = number_format((($amount * 100)/100), 2, '.', '');
-$checkout_detail = 'Charge for ' . $params['description'];
-$checkout_referenceNo = ''.substr(time(), 4, 5).'00'.$params['invoiceid'];
-$checkout_serialID = AS_Gbprimepay_API::generateID();
-$checkout_platform = gbp_instances('PLATFORM');
-$checkout_mode = gbp_instances('MODE');
-$checkout_status = gbp_instances('STATUS');
-$checkout_domain = AS_Gbprimepay_API::getDomain();
-$checkout_otpCode = 'Y';
-$checkout_method = AS_Gbprimepay_API::getSelectMethod($whmcsgateway[0]);
-$checkout_environment = $params['environment'];
+    $amount = $params['amount'];
+    $checkout_amount = number_format((($amount * 100)/100), 2, '.', '');
+    $checkout_detail = 'Charge for ' . $params['description'];
+    $checkout_referenceNo = ''.substr(time(), 4, 5).'00'.$params['invoiceid'];
+    $checkout_serialID = AS_Gbprimepay_API::generateID();
+    $checkout_platform = gbp_instances('PLATFORM');
+    $checkout_mode = gbp_instances('MODE');
+    $checkout_status = gbp_instances('STATUS');
+    $checkout_domain = AS_Gbprimepay_API::getDomain();
+    $checkout_otpCode = 'Y';
+    $checkout_method = AS_Gbprimepay_API::getSelectMethod($whmcsgateway[0]);
+    $checkout_environment = $params['environment'];
 
-if ($params['environment'] === 'prelive') {
-    $merchant_url = gbp_instances('URL_MERCHANT_TEST');
-    $merchant_configkey = $params['test_public_key'];
-} else {
-    $merchant_url = gbp_instances('URL_MERCHANT_LIVE');
-    $merchant_configkey = $params['live_public_key'];
-}
+    if ($params['environment'] === 'prelive') {
+        $merchant_url = gbp_instances('URL_MERCHANT_TEST');
+        $merchant_configkey = $params['test_public_key'];
+    } else {
+        $merchant_url = gbp_instances('URL_MERCHANT_LIVE');
+        $merchant_configkey = $params['live_public_key'];
+    }
 
-if ($params['environment'] === 'prelive') {
-    $checkout_url = gbp_instances('URL_CHECKOUT_TEST');
-} else {
-    $checkout_url = gbp_instances('URL_CHECKOUT_LIVE');
-}
+    if ($params['environment'] === 'prelive') {
+        $checkout_url = gbp_instances('URL_CHECKOUT_TEST');
+    } else {
+        $checkout_url = gbp_instances('URL_CHECKOUT_LIVE');
+    }
 
-if ($params['environment'] === 'prelive') {
-    $init_gbp['environment']['prelive'] = array(
-        "public_key" => $params['test_public_key'],
-        "secret_key" => $params['test_secret_key'],
-        "token_key" => $params['test_token_key'],
-    ); 
-} else {
-    $init_gbp['environment']['production'] = array(
-        "public_key" => $params['live_public_key'],
-        "secret_key" => $params['live_secret_key'],
-        "token_key" => $params['live_token_key'],
-    ); 
-}
-if ($params['gbp_checkout_enabled'] !== '') {
-    $init_gbp['init_gateways']['creditcard'] = array(
-        "enabled" => 'yes',
-        "display" => $params['gbp_direct_display'],
-    ); 
-}
-if ($params['gbp_installment_enabled'] !== '') {
-    $init_gbp['init_gateways']['installment'] = array(
-        "enabled" => 'yes',
-        "display" => $params['gbp_installment_display'],
-    ); 
-    $init_gbp['init_gateways']['installment_options'] = array(
-        "kasikorn_installment_term" => $params['kasikorn_installment_term'],
-        "krungthai_installment_term" => $params['krungthai_installment_term'],
-        "thanachart_installment_term" => $params['thanachart_installment_term'],
-        "ayudhya_installment_term" => $params['ayudhya_installment_term'],
-        "firstchoice_installment_term" => $params['firstchoice_installment_term'],
-        "scb_installment_term" => $params['scb_installment_term'],
-        "bbl_installment_term" => $params['bbl_installment_term'],
-    ); 
-}
-if ($params['gbp_qrcode_enabled'] !== '') {
-    $init_gbp['init_gateways']['qrcode'] = array(
-        "enabled" => 'yes',
-        "display" => $params['gbp_qrcode_display'],
-    ); 
-}
-if ($params['gbp_qrcredit_enabled'] !== '') {
-    $init_gbp['init_gateways']['qrcredit'] = array(
-        "enabled" => 'yes',
-        "display" => $params['gbp_qrcredit_display'],
-    ); 
-}
+    if ($params['environment'] === 'prelive') {
+        $init_gbp['environment']['prelive'] = array(
+            "public_key" => $params['test_public_key'],
+            "secret_key" => $params['test_secret_key'],
+            "token_key" => $params['test_token_key'],
+        ); 
+    } else {
+        $init_gbp['environment']['production'] = array(
+            "public_key" => $params['live_public_key'],
+            "secret_key" => $params['live_secret_key'],
+            "token_key" => $params['live_token_key'],
+        ); 
+    }
+    if ($params['gbp_checkout_enabled'] !== '') {
+        $init_gbp['init_gateways']['creditcard'] = array(
+            "enabled" => 'yes',
+            "display" => $params['gbp_direct_display'],
+        ); 
+    }
+    if ($params['gbp_installment_enabled'] !== '') {
+        $init_gbp['init_gateways']['installment'] = array(
+            "enabled" => 'yes',
+            "display" => $params['gbp_installment_display'],
+        ); 
+        $init_gbp['init_gateways']['installment_options'] = array(
+            "kasikorn_installment_term" => $params['kasikorn_installment_term'],
+            "krungthai_installment_term" => $params['krungthai_installment_term'],
+            "thanachart_installment_term" => $params['thanachart_installment_term'],
+            "ayudhya_installment_term" => $params['ayudhya_installment_term'],
+            "firstchoice_installment_term" => $params['firstchoice_installment_term'],
+            "scb_installment_term" => $params['scb_installment_term'],
+            "bbl_installment_term" => $params['bbl_installment_term'],
+        ); 
+    }
+    if ($params['gbp_qrcode_enabled'] !== '') {
+        $init_gbp['init_gateways']['qrcode'] = array(
+            "enabled" => 'yes',
+            "display" => $params['gbp_qrcode_display'],
+        ); 
+    }
+    if ($params['gbp_qrcredit_enabled'] !== '') {
+        $init_gbp['init_gateways']['qrcredit'] = array(
+            "enabled" => 'yes',
+            "display" => $params['gbp_qrcredit_display'],
+        ); 
+    }
 
-if ($params['gbp_qrwechat_enabled'] !== '') {
-    $init_gbp['init_gateways']['qrwechat'] = array(
-        "enabled" => 'yes',
-        "display" => $params['gbp_qrwechat_display'],
-    ); 
-}
+    if ($params['gbp_qrwechat_enabled'] !== '') {
+        $init_gbp['init_gateways']['qrwechat'] = array(
+            "enabled" => 'yes',
+            "display" => $params['gbp_qrwechat_display'],
+        ); 
+    }
 
-if ($params['gbp_linepay_enabled'] !== '') {
-    $init_gbp['init_gateways']['linepay'] = array(
-        "enabled" => 'yes',
-        "display" => $params['gbp_linepay_display'],
-    ); 
-}
+    if ($params['gbp_linepay_enabled'] !== '') {
+        $init_gbp['init_gateways']['linepay'] = array(
+            "enabled" => 'yes',
+            "display" => $params['gbp_linepay_display'],
+        ); 
+    }
 
-if ($params['gbp_truewallet_enabled'] !== '') {
-    $init_gbp['init_gateways']['truewallet'] = array(
-        "enabled" => 'yes',
-        "display" => $params['gbp_truewallet_display'],
-    ); 
-}
+    if ($params['gbp_truewallet_enabled'] !== '') {
+        $init_gbp['init_gateways']['truewallet'] = array(
+            "enabled" => 'yes',
+            "display" => $params['gbp_truewallet_display'],
+        ); 
+    }
 
-if ($params['gbp_mbanking_enabled'] !== '') {
-    $init_gbp['init_gateways']['mbanking'] = array(
-        "enabled" => 'yes',
-        "display" => $params['gbp_mbanking_display'],
-    ); 
-}
+    if ($params['gbp_mbanking_enabled'] !== '') {
+        $init_gbp['init_gateways']['mbanking'] = array(
+            "enabled" => 'yes',
+            "display" => $params['gbp_mbanking_display'],
+        ); 
+    }
 
-if ($params['gbp_barcode_enabled'] !== '') {
-    $init_gbp['init_gateways']['barcode'] = array(
-        "enabled" => 'yes',
-        "display" => $params['gbp_barcode_display'],
-    ); 
-}
-$merchant_data = AS_Gbprimepay_API::sendMerchantCurl("$merchant_url",$merchant_configkey, [], 'GET');
-$product_data = array();
-$invoice = Invoice::find($params['invoiceid']);
-$client = $params['clientdetails'];
-$products = $invoice->getBillingValues();
-unset($products['overdue']);
-$i = 0;
-$unit = '';
-foreach ( $products as $k => $v ) {
+    if ($params['gbp_barcode_enabled'] !== '') {
+        $init_gbp['init_gateways']['barcode'] = array(
+            "enabled" => 'yes',
+            "display" => $params['gbp_barcode_display'],
+        ); 
+    }
+    $merchant_data = AS_Gbprimepay_API::sendMerchantCurl("$merchant_url",$merchant_configkey, [], 'GET');
+    $product_data = array();
+    $invoice = Invoice::find($params['invoiceid']);
+    $client = $params['clientdetails'];
+    $products = $invoice->getBillingValues();
+    unset($products['overdue']);
+    $i = 0;
+    $unit = '';
+    foreach ( $products as $k => $v ) {
         $name = htmlspecialchars_decode(StripSlashes($v['description']), ENT_COMPAT | ENT_QUOTES);
         $quantity = 1;
         $subtotal = $v['amount'];
@@ -573,10 +573,10 @@ foreach ( $products as $k => $v ) {
         if ($v['recurringCyclePeriod'] && $v['recurringCyclePeriod'] > 0) {
             if ($v['recurringCyclePeriod'] && $v['recurringCyclePeriod'] > 1) {
                 $unit = $v['recurringCyclePeriod'].' '. $v['recurringCycleUnits'];
-            }else{
+            } else {
                 $unit = $v['recurringCycleUnits'];
             }
-        }else{
+        } else {
             $unit = $v['recurringCycleUnits'];
         }
         $product_data['products_items_'.$i] = array(
@@ -586,68 +586,68 @@ foreach ( $products as $k => $v ) {
             "items_subtotal" => $subtotal,
             "items_tax" => $tax,
             "items_total" => $amount,
-        ); 
-$i++;
-}
-$currency_data = array(
-    "currencyCode" => '764',
-    "currencySign" => '฿',
-    "currencyISO" => $checkout_currency_iso,
-); 
+        );
+        $i++;
+    }
+    $currency_data = array(
+        "currencyCode" => '764',
+        "currencySign" => '฿',
+        "currencyISO" => $checkout_currency_iso,
+    ); 
 
-$capsuledata = Capsule::table('tblinvoices')
-    ->where('id', (int) $params['invoiceid'])
-    ->first();
-if($checkout_language=='Thai'){
-    $total_data = array(
-        "total_description" => $params['description'],
-        "total_subtotal" => $capsuledata->subtotal,
-        "total_subtotal_text" => 'รวม',
-        "total_total_text" => 'รวมทั้งสิ้น',
-        "total_tax_text" => 'ภาษีมูลค่าเพิ่ม ('. abs($capsuledata->taxrate) .'%)',
-        "total_unit_text" => $currency_data['currencySign'] .' / '. $unit,
-        "total_tax" => ($capsuledata->tax + $capsuledata->tax2),
-        "total_total" => $capsuledata->total,
+    $capsuledata = Capsule::table('tblinvoices')
+        ->where('id', (int) $params['invoiceid'])
+        ->first();
+    if($checkout_language=='Thai'){
+        $total_data = array(
+            "total_description" => $params['description'],
+            "total_subtotal" => $capsuledata->subtotal,
+            "total_subtotal_text" => 'รวม',
+            "total_total_text" => 'รวมทั้งสิ้น',
+            "total_tax_text" => 'ภาษีมูลค่าเพิ่ม ('. abs($capsuledata->taxrate) .'%)',
+            "total_unit_text" => $currency_data['currencySign'] .' / '. $unit,
+            "total_tax" => ($capsuledata->tax + $capsuledata->tax2),
+            "total_total" => $capsuledata->total,
+        ); 
+    } else {
+        $total_data = array(
+            "total_description" => $params['description'],
+            "total_subtotal" => $capsuledata->subtotal,
+            "total_subtotal_text" => 'Sub Total',
+            "total_total_text" => 'Grand Total',
+            "total_tax_text" => 'Taxes ('. abs($capsuledata->taxrate) .'% VAT)',
+            "total_unit_text" => $currency_data['currencySign'] .' / '. $unit,
+            "total_tax" => ($capsuledata->tax + $capsuledata->tax2),
+            "total_total" => $capsuledata->total,
+        ); 
+    }
+    $payment_data = array(
+        "payment_amount" => $checkout_amount,
+        "payment_referenceNo" => $checkout_referenceNo,
+        "payment_otpCode" => $checkout_otpCode,
+        "payment_detail" => $checkout_detail,
+        "payment_cancelUrl" => $checkout_cancelUrl,
+        "payment_failedUrl" => $checkout_failedUrl,
+        "payment_responseUrl" => $checkout_responseUrl,
+        "payment_backgroundUrl" => $checkout_backgroundUrl,
+        "payment_customerName" => $checkout_customerName,
+        "payment_customerEmail" => $checkout_customerEmail,
+        "payment_customerAddress" => $checkout_customerAddress,
+        "payment_customerTelephone" => $checkout_customerTelephone,
+        "payment_merchantDefined1" => $checkout_serialID,
+        "payment_merchantDefined2" => '',
+        "payment_merchantDefined3" => $checkout_referenceNo,
+        "payment_merchantDefined4" => '',
+        "payment_merchantDefined5" => '',
     ); 
-}else{
-    $total_data = array(
-        "total_description" => $params['description'],
-        "total_subtotal" => $capsuledata->subtotal,
-        "total_subtotal_text" => 'Sub Total',
-        "total_total_text" => 'Grand Total',
-        "total_tax_text" => 'Taxes ('. abs($capsuledata->taxrate) .'% VAT)',
-        "total_unit_text" => $currency_data['currencySign'] .' / '. $unit,
-        "total_tax" => ($capsuledata->tax + $capsuledata->tax2),
-        "total_total" => $capsuledata->total,
-    ); 
-}
-$payment_data = array(
-    "payment_amount" => $checkout_amount,
-    "payment_referenceNo" => $checkout_referenceNo,
-    "payment_otpCode" => $checkout_otpCode,
-    "payment_detail" => $checkout_detail,
-    "payment_cancelUrl" => $checkout_cancelUrl,
-    "payment_failedUrl" => $checkout_failedUrl,
-    "payment_responseUrl" => $checkout_responseUrl,
-    "payment_backgroundUrl" => $checkout_backgroundUrl,
-    "payment_customerName" => $checkout_customerName,
-    "payment_customerEmail" => $checkout_customerEmail,
-    "payment_customerAddress" => $checkout_customerAddress,
-    "payment_customerTelephone" => $checkout_customerTelephone,
-    "payment_merchantDefined1" => $checkout_serialID,
-    "payment_merchantDefined2" => '',
-    "payment_merchantDefined3" => $checkout_referenceNo,
-    "payment_merchantDefined4" => '',
-    "payment_merchantDefined5" => '',
-); 
-$customer_data = array(
-    "customer_first_name" => $checkout_first_name,
-    "customer_last_name" => $checkout_last_name,
-    "customer_name" => $checkout_customerName,
-    "customer_email" => $checkout_customerEmail,
-    "customer_address" => $checkout_customerAddress,
-    "customer_telephone" => $checkout_customerTelephone,
-);
+    $customer_data = array(
+        "customer_first_name" => $checkout_first_name,
+        "customer_last_name" => $checkout_last_name,
+        "customer_name" => $checkout_customerName,
+        "customer_email" => $checkout_customerEmail,
+        "customer_address" => $checkout_customerAddress,
+        "customer_telephone" => $checkout_customerTelephone,
+    );
 
     $htmlOutput = '<form  method="post"  target="_top" action="' . $checkout_url . '">';
     $htmlOutput .= '<input type="hidden" name="serialID" value="'. $checkout_serialID.'">';
@@ -660,106 +660,107 @@ $customer_data = array(
     $htmlOutput .= '<input type="hidden" name="language" value="'. $checkout_language.'">';
     
     $initgbpArray = $init_gbp;
-    if(isset($initgbpArray)){
-      $keys = array_keys($initgbpArray);
-      for($i = 0; $i < count($initgbpArray); $i++) {
-      if($keys[$i]=='environment'){
-        foreach($initgbpArray[$keys[$i]] as $key => $value) {
-            if($key=='prelive'){                    
-              foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
-                  $htmlOutput .=  '<input type="hidden" name="init_gbp[environment][prelive]['. $ikey .']" value="'. $ivalue .'">';
-              }
+    if (isset($initgbpArray)) {
+        $keys = array_keys($initgbpArray);
+        for($i = 0; $i < count($initgbpArray); $i++) {
+            if($keys[$i]=='environment') {
+                foreach($initgbpArray[$keys[$i]] as $key => $value) {
+                    if($key=='prelive'){                    
+                        foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
+                            $htmlOutput .=  '<input type="hidden" name="init_gbp[environment][prelive]['. $ikey .']" value="'. $ivalue .'">';
+                        }
+                    }
+                    if($key=='production'){                    
+                        foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
+                            $htmlOutput .=  '<input type="hidden" name="init_gbp[environment][production]['. $ikey .']" value="'. $ivalue .'">';
+                        }
+                    }
+                }
             }
-            if($key=='production'){                    
-              foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
-                  $htmlOutput .=  '<input type="hidden" name="init_gbp[environment][production]['. $ikey .']" value="'. $ivalue .'">';
-              }
+            if ($keys[$i]=='init_gateways') {
+                $sortArray = $checkout_sort_method;
+                if(isset($sortArray)) {
+
+// 4 TAB
+$jkeys = array_keys($sortArray);
+foreach($sortArray as $jkey => $jvalue) {
+    foreach($initgbpArray[$keys[$i]] as $key => $value) {
+        if(($key=='creditcard') && ($jvalue==$key)){                    
+            foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
+                $htmlOutput .=  '<input type="hidden" name="init_gbp[init_gateways][creditcard]['. $ikey .']" value="'. $ivalue .'">';
             }
         }
-      }
-      if($keys[$i]=='init_gateways'){
-        
-    $sortArray = $checkout_sort_method;
-    if(isset($sortArray)){
-      $jkeys = array_keys($sortArray);
-          foreach($sortArray as $jkey => $jvalue) {
-                foreach($initgbpArray[$keys[$i]] as $key => $value) {
-                  if(($key=='creditcard') && ($jvalue==$key)){                    
-                    foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
-                        $htmlOutput .=  '<input type="hidden" name="init_gbp[init_gateways][creditcard]['. $ikey .']" value="'. $ivalue .'">';
-                    }
-                  }
-                  if(($key=='installment') && ($jvalue==$key)){                    
-                    foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
-                        $htmlOutput .=  '<input type="hidden" name="init_gbp[init_gateways][installment]['. $ikey .']" value="'. $ivalue .'">';
-                    }
-                  }
-                  if(($key=='installment_options') && ($jvalue=='installment')){                    
-                    foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
-                        $htmlOutput .=  '<input type="hidden" name="init_gbp[init_gateways][installment_options]['. $ikey .']" value="'. $ivalue .'">';
-                    }
-                  }
-                  if(($key=='qrcode') && ($jvalue==$key)){                    
-                    foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
-                        $htmlOutput .=  '<input type="hidden" name="init_gbp[init_gateways][qrcode]['. $ikey .']" value="'. $ivalue .'">';
-                    }
-                  }
-                  if(($key=='qrcredit') && ($jvalue==$key)){                    
-                    foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
-                        $htmlOutput .=  '<input type="hidden" name="init_gbp[init_gateways][qrcredit]['. $ikey .']" value="'. $ivalue .'">';
-                    }
-                  }
-                  if(($key=='qrwechat') && ($jvalue==$key)){                    
-                    foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
-                        $htmlOutput .=  '<input type="hidden" name="init_gbp[init_gateways][qrwechat]['. $ikey .']" value="'. $ivalue .'">';
-                    }
-                  }
-                  if(($key=='linepay') && ($jvalue==$key)){                    
-                    foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
-                        $htmlOutput .=  '<input type="hidden" name="init_gbp[init_gateways][linepay]['. $ikey .']" value="'. $ivalue .'">';
-                    }
-                  }
-                  if(($key=='truewallet') && ($jvalue==$key)){                    
-                    foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
-                        $htmlOutput .=  '<input type="hidden" name="init_gbp[init_gateways][truewallet]['. $ikey .']" value="'. $ivalue .'">';
-                    }
-                  }
-                  if(($key=='mbanking') && ($jvalue==$key)){                    
-                    foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
-                        $htmlOutput .=  '<input type="hidden" name="init_gbp[init_gateways][mbanking]['. $ikey .']" value="'. $ivalue .'">';
-                    }
-                  }
-                  if(($key=='barcode') && ($jvalue==$key)){                    
-                    foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
-                        $htmlOutput .=  '<input type="hidden" name="init_gbp[init_gateways][barcode]['. $ikey .']" value="'. $ivalue .'">';
-                    }
-                  }
-              }
-          }
+        if(($key=='installment') && ($jvalue==$key)){                    
+            foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
+                $htmlOutput .=  '<input type="hidden" name="init_gbp[init_gateways][installment]['. $ikey .']" value="'. $ivalue .'">';
+            }
+        }
+        if(($key=='installment_options') && ($jvalue=='installment')){                    
+            foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
+                $htmlOutput .=  '<input type="hidden" name="init_gbp[init_gateways][installment_options]['. $ikey .']" value="'. $ivalue .'">';
+            }
+        }
+        if(($key=='qrcode') && ($jvalue==$key)){                    
+            foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
+                $htmlOutput .=  '<input type="hidden" name="init_gbp[init_gateways][qrcode]['. $ikey .']" value="'. $ivalue .'">';
+            }
+        }
+        if(($key=='qrcredit') && ($jvalue==$key)){                    
+            foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
+                $htmlOutput .=  '<input type="hidden" name="init_gbp[init_gateways][qrcredit]['. $ikey .']" value="'. $ivalue .'">';
+            }
+        }
+        if(($key=='qrwechat') && ($jvalue==$key)){                    
+            foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
+                $htmlOutput .=  '<input type="hidden" name="init_gbp[init_gateways][qrwechat]['. $ikey .']" value="'. $ivalue .'">';
+            }
+        }
+        if(($key=='linepay') && ($jvalue==$key)){                    
+            foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
+                $htmlOutput .=  '<input type="hidden" name="init_gbp[init_gateways][linepay]['. $ikey .']" value="'. $ivalue .'">';
+            }
+        }
+        if(($key=='truewallet') && ($jvalue==$key)){                    
+            foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
+                $htmlOutput .=  '<input type="hidden" name="init_gbp[init_gateways][truewallet]['. $ikey .']" value="'. $ivalue .'">';
+            }
+        }
+        if(($key=='mbanking') && ($jvalue==$key)){                    
+            foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
+                $htmlOutput .=  '<input type="hidden" name="init_gbp[init_gateways][mbanking]['. $ikey .']" value="'. $ivalue .'">';
+            }
+        }
+        if(($key=='barcode') && ($jvalue==$key)){                    
+            foreach($initgbpArray[$keys[$i]][$key] as $ikey => $ivalue) {
+                $htmlOutput .=  '<input type="hidden" name="init_gbp[init_gateways][barcode]['. $ikey .']" value="'. $ivalue .'">';
+            }
+        }
     }
-      }
-    }
+}// END 4 TAB
+                }
+            }
+        }
     }
     $merchantArray = $merchant_data;
-    if(isset($merchantArray)){
-      $keys = array_keys($merchantArray);
-          foreach($merchantArray as $key => $value) {
+    if (isset($merchantArray)) {
+        $keys = array_keys($merchantArray);
+        foreach($merchantArray as $key => $value) {
             if($key=='merchant_conditions'){
-              $htmlOutput .=  '<input type="hidden" name="merchant_collection['. $key .']" value="'. htmlentities($value) .'">';
+                $htmlOutput .=  '<input type="hidden" name="merchant_collection['. $key .']" value="'. htmlentities($value) .'">';
             }else{                    
-              $htmlOutput .=  '<input type="hidden" name="merchant_collection['. $key .']" value="'. $value .'">';
+                $htmlOutput .=  '<input type="hidden" name="merchant_collection['. $key .']" value="'. $value .'">';
             }
-          }
+        }
     }
 
     $productArray = $product_data;
     if(isset($productArray)){
-      $keys = array_keys($productArray);
-      for($i = 0; $i < count($productArray); $i++) {
-          foreach($productArray[$keys[$i]] as $key => $value) {
-              $htmlOutput .=  '<input type="hidden" name="products_collection[products_items_'. $i .']['. $key .']" value="'. $value .'">';
-          }
-      }    
+        $keys = array_keys($productArray);
+        for($i = 0; $i < count($productArray); $i++) {
+            foreach($productArray[$keys[$i]] as $key => $value) {
+                $htmlOutput .=  '<input type="hidden" name="products_collection[products_items_'. $i .']['. $key .']" value="'. $value .'">';
+            }
+        }    
     }
 
     $totalArray = $total_data;
