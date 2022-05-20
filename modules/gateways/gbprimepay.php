@@ -593,7 +593,7 @@ function gbprimepay_link($params)
         "currencyCode" => '764',
         "currencySign" => '฿',
         "currencyISO" => $checkout_currency_iso,
-    ); 
+    );
 
     $capsuledata = Capsule::table('tblinvoices')
         ->where('id', (int) $params['invoiceid'])
@@ -608,7 +608,7 @@ function gbprimepay_link($params)
             "total_unit_text" => $currency_data['currencySign'] .' / '. $unit,
             "total_tax" => ($capsuledata->tax + $capsuledata->tax2),
             "total_total" => $capsuledata->total,
-        ); 
+        );
     } else {
         $total_data = array(
             "total_description" => $params['description'],
