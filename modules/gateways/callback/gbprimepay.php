@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
 if(strcasecmp($contentType, 'application/json') == 0) {
 
-    $raw_post = @file_get_contents( 'php://input' );
+    $raw_post = file_get_contents( 'php://input' );
     $payload  = json_decode( $raw_post );
     $paymentType = $payload->{'paymentType'};
 
@@ -179,9 +179,9 @@ if(strcasecmp($contentType, 'application/json') == 0) {
     $paymentFee = $postData['fee'] ?? 0;
     $ordertxt = '';
     if ($invoiceId){$ordertxt = $invoiceId;}
-if($paymentType=='C'){
-// Credit Card 
-              if ( isset( $postData['resultCode'] ) ) {
+        if($paymentType=='C'){
+        // Credit Card 
+            if ( isset( $postData['resultCode'] ) ) {
                 if ($postData['resultCode'] == '00') {
                     $checkoutgbpReferenceNo = $postData['gbpReferenceNo'];
                     $transactionStatus = '3-D Secure Payment Authorized.';
@@ -195,29 +195,28 @@ if($paymentType=='C'){
                     );
                     logTransaction($gatewayParams['name'], $postData, $transactionStatus);
 
-// checkout_afterpay_url
-$checkoutmethod = 'creditcard';
-$checkoutshoprefNo = $ordertxt;
-$checkoutserialID = $postData['merchantDefined1'];
-$checkoutcardNo = $postData['cardNo'];
-$checkoutID = $postData['merchantDefined5'];
-$checkoutamount = $postData['amount'];
-$checkoutdate = $postData['date'];
-$checkouttime = $postData['time'];
-$url = $checkout_url.'/afterpay/'.$checkoutID;
-$field = "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"referenceNo\"\r\n\r\n$referenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"method\"\r\n\r\n$checkoutmethod\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"gbpReferenceNo\"\r\n\r\n$checkoutgbpReferenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"amount\"\r\n\r\n$checkoutamount\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"date\"\r\n\r\n$checkoutdate\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"time\"\r\n\r\n$checkouttime\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"shoprefNo\"\r\n\r\n$checkoutshoprefNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"cardNo\"\r\n\r\n$checkoutcardNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"serialID\"\r\n\r\n$checkoutserialID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"checkoutID\"\r\n\r\n$checkoutID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--";
+                    // checkout_afterpay_url
+                    $checkoutmethod = 'creditcard';
+                    $checkoutshoprefNo = $ordertxt;
+                    $checkoutserialID = $postData['merchantDefined1'];
+                    $checkoutcardNo = $postData['cardNo'];
+                    $checkoutID = $postData['merchantDefined5'];
+                    $checkoutamount = $postData['amount'];
+                    $checkoutdate = $postData['date'];
+                    $checkouttime = $postData['time'];
+                    $url = $checkout_url.'/afterpay/'.$checkoutID;
+                    $field = "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"referenceNo\"\r\n\r\n$referenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"method\"\r\n\r\n$checkoutmethod\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"gbpReferenceNo\"\r\n\r\n$checkoutgbpReferenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"amount\"\r\n\r\n$checkoutamount\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"date\"\r\n\r\n$checkoutdate\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"time\"\r\n\r\n$checkouttime\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"shoprefNo\"\r\n\r\n$checkoutshoprefNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"cardNo\"\r\n\r\n$checkoutcardNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"serialID\"\r\n\r\n$checkoutserialID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"checkoutID\"\r\n\r\n$checkoutID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--";
 
-$checkoutReturn = AS_Gbprimepay_API::afterpayCheckout("$url", $checkout_configkey, $field, 'POST');
+                    $checkoutReturn = AS_Gbprimepay_API::afterpayCheckout("$url", $checkout_configkey, $field, 'POST');
 
-                }else{
+                } else {
                     $transactionStatus = '3-D Secure Payment failed.';
                     logTransaction($gatewayParams['name'], $postData, $transactionStatus);
                 }
-
+            }
         }
-}
-if($paymentType=='I'){
-// Credit Card Installment 
+        if($paymentType=='I') {
+            // Credit Card Installment 
             if ( isset( $postData['resultCode'] ) ) {
                 if ($postData['resultCode'] == '00') {
                     $checkoutgbpReferenceNo = $postData['gbpReferenceNo'];
@@ -231,31 +230,30 @@ if($paymentType=='I'){
                         $gatewayModuleName
                     );
                     logTransaction($gatewayParams['name'], $postData, $transactionStatus);
-// checkout_afterpay_url
-$checkoutmethod = 'installment';
-$checkoutshoprefNo = $ordertxt;
-$checkoutserialID = $postData['merchantDefined1'];
-$checkoutcardNo = $postData['cardNo'];
-$checkoutID = $postData['merchantDefined5'];
-$checkoutamount = $postData['amount'];
-$checkoutdate = $postData['date'];
-$checkouttime = $postData['time'];
-$url = $checkout_url.'/afterpay/'.$checkoutID;
-$field = "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"referenceNo\"\r\n\r\n$referenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"method\"\r\n\r\n$checkoutmethod\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"gbpReferenceNo\"\r\n\r\n$checkoutgbpReferenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"amount\"\r\n\r\n$checkoutamount\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"date\"\r\n\r\n$checkoutdate\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"time\"\r\n\r\n$checkouttime\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"shoprefNo\"\r\n\r\n$checkoutshoprefNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"cardNo\"\r\n\r\n$checkoutcardNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"serialID\"\r\n\r\n$checkoutserialID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"checkoutID\"\r\n\r\n$checkoutID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--";
+                    // checkout_afterpay_url
+                    $checkoutmethod = 'installment';
+                    $checkoutshoprefNo = $ordertxt;
+                    $checkoutserialID = $postData['merchantDefined1'];
+                    $checkoutcardNo = $postData['cardNo'];
+                    $checkoutID = $postData['merchantDefined5'];
+                    $checkoutamount = $postData['amount'];
+                    $checkoutdate = $postData['date'];
+                    $checkouttime = $postData['time'];
+                    $url = $checkout_url.'/afterpay/'.$checkoutID;
+                    $field = "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"referenceNo\"\r\n\r\n$referenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"method\"\r\n\r\n$checkoutmethod\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"gbpReferenceNo\"\r\n\r\n$checkoutgbpReferenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"amount\"\r\n\r\n$checkoutamount\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"date\"\r\n\r\n$checkoutdate\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"time\"\r\n\r\n$checkouttime\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"shoprefNo\"\r\n\r\n$checkoutshoprefNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"cardNo\"\r\n\r\n$checkoutcardNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"serialID\"\r\n\r\n$checkoutserialID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"checkoutID\"\r\n\r\n$checkoutID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--";
 
-$checkoutReturn = AS_Gbprimepay_API::afterpayCheckout("$url", $checkout_configkey, $field, 'POST');
+                    $checkoutReturn = AS_Gbprimepay_API::afterpayCheckout("$url", $checkout_configkey, $field, 'POST');
 
                 }else{
                     $transactionStatus = 'Credit Card Installment Payment failed.';
                     logTransaction($gatewayParams['name'], $postData, $transactionStatus);
                 }
-
-      }
-}
-if($paymentType=='W'){
-// Qr Wechat
-if ( isset( $postData['resultCode'] ) ) {
-    if ($postData['resultCode'] == '00') {
+            }
+        }
+        if($paymentType=='W'){
+            // Qr Wechat
+            if ( isset( $postData['resultCode'] ) ) {
+                if ($postData['resultCode'] == '00') {
                     $checkoutgbpReferenceNo = $postData['gbpReferenceNo'];
                     $transactionStatus = 'QR Wechat Payment Authorized.';
                     checkCbTransID($checkoutgbpReferenceNo);
@@ -268,30 +266,29 @@ if ( isset( $postData['resultCode'] ) ) {
                     );
                     logTransaction($gatewayParams['name'], $postData, $transactionStatus);
 
-// checkout_afterpay_url
-$checkoutmethod = 'qrwechat';
-$checkoutshoprefNo = $ordertxt;
-$checkoutserialID = $postData['merchantDefined1'];
-$checkoutID = $postData['merchantDefined5'];
-$checkoutamount = $postData['amount'];
-$checkoutdate = $postData['date'];
-$checkouttime = $postData['time'];
-$url = $checkout_url.'/afterpay/'.$checkoutID;
-$field = "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"referenceNo\"\r\n\r\n$referenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"method\"\r\n\r\n$checkoutmethod\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"gbpReferenceNo\"\r\n\r\n$checkoutgbpReferenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"amount\"\r\n\r\n$checkoutamount\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"date\"\r\n\r\n$checkoutdate\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"time\"\r\n\r\n$checkouttime\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"shoprefNo\"\r\n\r\n$checkoutshoprefNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"serialID\"\r\n\r\n$checkoutserialID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"checkoutID\"\r\n\r\n$checkoutID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--";
+                    // checkout_afterpay_url
+                    $checkoutmethod = 'qrwechat';
+                    $checkoutshoprefNo = $ordertxt;
+                    $checkoutserialID = $postData['merchantDefined1'];
+                    $checkoutID = $postData['merchantDefined5'];
+                    $checkoutamount = $postData['amount'];
+                    $checkoutdate = $postData['date'];
+                    $checkouttime = $postData['time'];
+                    $url = $checkout_url.'/afterpay/'.$checkoutID;
+                    $field = "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"referenceNo\"\r\n\r\n$referenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"method\"\r\n\r\n$checkoutmethod\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"gbpReferenceNo\"\r\n\r\n$checkoutgbpReferenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"amount\"\r\n\r\n$checkoutamount\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"date\"\r\n\r\n$checkoutdate\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"time\"\r\n\r\n$checkouttime\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"shoprefNo\"\r\n\r\n$checkoutshoprefNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"serialID\"\r\n\r\n$checkoutserialID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"checkoutID\"\r\n\r\n$checkoutID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--";
 
-$checkoutReturn = AS_Gbprimepay_API::afterpayCheckout("$url", $checkout_configkey, $field, 'POST');
+                    $checkoutReturn = AS_Gbprimepay_API::afterpayCheckout("$url", $checkout_configkey, $field, 'POST');
 
-            }else{
-                $transactionStatus = 'QR Wechat Payment failed.';
-                logTransaction($gatewayParams['name'], $postData, $transactionStatus);
+                } else {
+                    $transactionStatus = 'QR Wechat Payment failed.';
+                    logTransaction($gatewayParams['name'], $postData, $transactionStatus);
+                }
             }
-
-  }
-}
-if($paymentType=='L'){
-// Rabbit Line Pay
-if ( isset( $postData['resultCode'] ) ) {
-    if ($postData['resultCode'] == '00') {
+        }
+        if($paymentType=='L'){
+            // Rabbit Line Pay
+            if ( isset( $postData['resultCode'] ) ) {
+                if ($postData['resultCode'] == '00') {
                     $checkoutgbpReferenceNo = $postData['gbpReferenceNo'];
                     $transactionStatus = 'Rabbit Line Pay Payment Authorized.';
                     checkCbTransID($checkoutgbpReferenceNo);
@@ -304,30 +301,29 @@ if ( isset( $postData['resultCode'] ) ) {
                     );
                     logTransaction($gatewayParams['name'], $postData, $transactionStatus);
 
-// checkout_afterpay_url
-$checkoutmethod = 'linepay';
-$checkoutshoprefNo = $ordertxt;
-$checkoutserialID = $postData['merchantDefined1'];
-$checkoutID = $postData['merchantDefined5'];
-$checkoutamount = $postData['amount'];
-$checkoutdate = $postData['date'];
-$checkouttime = $postData['time'];
-$url = $checkout_url.'/afterpay/'.$checkoutID;
-$field = "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"referenceNo\"\r\n\r\n$referenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"method\"\r\n\r\n$checkoutmethod\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"gbpReferenceNo\"\r\n\r\n$checkoutgbpReferenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"amount\"\r\n\r\n$checkoutamount\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"date\"\r\n\r\n$checkoutdate\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"time\"\r\n\r\n$checkouttime\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"shoprefNo\"\r\n\r\n$checkoutshoprefNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"serialID\"\r\n\r\n$checkoutserialID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"checkoutID\"\r\n\r\n$checkoutID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--";
+                    // checkout_afterpay_url
+                    $checkoutmethod = 'linepay';
+                    $checkoutshoprefNo = $ordertxt;
+                    $checkoutserialID = $postData['merchantDefined1'];
+                    $checkoutID = $postData['merchantDefined5'];
+                    $checkoutamount = $postData['amount'];
+                    $checkoutdate = $postData['date'];
+                    $checkouttime = $postData['time'];
+                    $url = $checkout_url.'/afterpay/'.$checkoutID;
+                    $field = "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"referenceNo\"\r\n\r\n$referenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"method\"\r\n\r\n$checkoutmethod\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"gbpReferenceNo\"\r\n\r\n$checkoutgbpReferenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"amount\"\r\n\r\n$checkoutamount\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"date\"\r\n\r\n$checkoutdate\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"time\"\r\n\r\n$checkouttime\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"shoprefNo\"\r\n\r\n$checkoutshoprefNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"serialID\"\r\n\r\n$checkoutserialID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"checkoutID\"\r\n\r\n$checkoutID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--";
 
-$checkoutReturn = AS_Gbprimepay_API::afterpayCheckout("$url", $checkout_configkey, $field, 'POST');
+                    $checkoutReturn = AS_Gbprimepay_API::afterpayCheckout("$url", $checkout_configkey, $field, 'POST');
 
-            }else{
-                $transactionStatus = 'Rabbit Line Pay Payment failed.';
-                logTransaction($gatewayParams['name'], $postData, $transactionStatus);
+                }else{
+                    $transactionStatus = 'Rabbit Line Pay Payment failed.';
+                    logTransaction($gatewayParams['name'], $postData, $transactionStatus);
+                }
             }
-
-  }
-}
-if($paymentType=='T'){
-// TrueMoney Wallet
-if ( isset( $postData['resultCode'] ) ) {
-    if ($postData['resultCode'] == '00') {
+        }
+        if($paymentType=='T'){
+            // TrueMoney Wallet
+            if ( isset( $postData['resultCode'] ) ) {
+                if ($postData['resultCode'] == '00') {
                     $checkoutgbpReferenceNo = $postData['gbpReferenceNo'];
                     $transactionStatus = 'TrueMoney Wallet Payment Authorized.';
                     checkCbTransID($checkoutgbpReferenceNo);
@@ -340,30 +336,29 @@ if ( isset( $postData['resultCode'] ) ) {
                     );
                     logTransaction($gatewayParams['name'], $postData, $transactionStatus);
 
-// checkout_afterpay_url
-$checkoutmethod = 'truewallet';
-$checkoutshoprefNo = $ordertxt;
-$checkoutserialID = $postData['merchantDefined1'];
-$checkoutID = $postData['merchantDefined5'];
-$checkoutamount = $postData['amount'];
-$checkoutdate = $postData['date'];
-$checkouttime = $postData['time'];
-$url = $checkout_url.'/afterpay/'.$checkoutID;
-$field = "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"referenceNo\"\r\n\r\n$referenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"method\"\r\n\r\n$checkoutmethod\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"gbpReferenceNo\"\r\n\r\n$checkoutgbpReferenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"amount\"\r\n\r\n$checkoutamount\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"date\"\r\n\r\n$checkoutdate\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"time\"\r\n\r\n$checkouttime\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"shoprefNo\"\r\n\r\n$checkoutshoprefNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"serialID\"\r\n\r\n$checkoutserialID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"checkoutID\"\r\n\r\n$checkoutID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--";
+                    // checkout_afterpay_url
+                    $checkoutmethod = 'truewallet';
+                    $checkoutshoprefNo = $ordertxt;
+                    $checkoutserialID = $postData['merchantDefined1'];
+                    $checkoutID = $postData['merchantDefined5'];
+                    $checkoutamount = $postData['amount'];
+                    $checkoutdate = $postData['date'];
+                    $checkouttime = $postData['time'];
+                    $url = $checkout_url.'/afterpay/'.$checkoutID;
+                    $field = "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"referenceNo\"\r\n\r\n$referenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"method\"\r\n\r\n$checkoutmethod\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"gbpReferenceNo\"\r\n\r\n$checkoutgbpReferenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"amount\"\r\n\r\n$checkoutamount\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"date\"\r\n\r\n$checkoutdate\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"time\"\r\n\r\n$checkouttime\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"shoprefNo\"\r\n\r\n$checkoutshoprefNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"serialID\"\r\n\r\n$checkoutserialID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"checkoutID\"\r\n\r\n$checkoutID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--";
 
-$checkoutReturn = AS_Gbprimepay_API::afterpayCheckout("$url", $checkout_configkey, $field, 'POST');
+                    $checkoutReturn = AS_Gbprimepay_API::afterpayCheckout("$url", $checkout_configkey, $field, 'POST');
 
-            }else{
-                $transactionStatus = 'TrueMoney Wallet Payment failed.';
-                logTransaction($gatewayParams['name'], $postData, $transactionStatus);
+                } else {
+                    $transactionStatus = 'TrueMoney Wallet Payment failed.';
+                    logTransaction($gatewayParams['name'], $postData, $transactionStatus);
+                }
             }
-
-  }
-}
-if($paymentType=='M'){
-// Mobile Banking
-if ( isset( $postData['resultCode'] ) ) {
-    if ($postData['resultCode'] == '00') {
+        }
+        if($paymentType=='M'){
+            // Mobile Banking
+            if ( isset( $postData['resultCode'] ) ) {
+                if ($postData['resultCode'] == '00') {
                     $checkoutgbpReferenceNo = $postData['gbpReferenceNo'];
                     $transactionStatus = 'Mobile Banking Payment Authorized.';
                     checkCbTransID($checkoutgbpReferenceNo);
@@ -376,25 +371,23 @@ if ( isset( $postData['resultCode'] ) ) {
                     );
                     logTransaction($gatewayParams['name'], $postData, $transactionStatus);
 
-// checkout_afterpay_url
-$checkoutmethod = 'mbanking';
-$checkoutshoprefNo = $ordertxt;
-$checkoutserialID = $postData['merchantDefined1'];
-$checkoutID = $postData['merchantDefined5'];
-$checkoutamount = $postData['amount'];
-$checkoutdate = $postData['date'];
-$checkouttime = $postData['time'];
-$url = $checkout_url.'/afterpay/'.$checkoutID;
-$field = "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"referenceNo\"\r\n\r\n$referenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"method\"\r\n\r\n$checkoutmethod\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"gbpReferenceNo\"\r\n\r\n$checkoutgbpReferenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"amount\"\r\n\r\n$checkoutamount\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"date\"\r\n\r\n$checkoutdate\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"time\"\r\n\r\n$checkouttime\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"shoprefNo\"\r\n\r\n$checkoutshoprefNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"serialID\"\r\n\r\n$checkoutserialID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"checkoutID\"\r\n\r\n$checkoutID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--";
+                // checkout_afterpay_url
+                $checkoutmethod = 'mbanking';
+                $checkoutshoprefNo = $ordertxt;
+                $checkoutserialID = $postData['merchantDefined1'];
+                $checkoutID = $postData['merchantDefined5'];
+                $checkoutamount = $postData['amount'];
+                $checkoutdate = $postData['date'];
+                $checkouttime = $postData['time'];
+                $url = $checkout_url.'/afterpay/'.$checkoutID;
+                $field = "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"referenceNo\"\r\n\r\n$referenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"method\"\r\n\r\n$checkoutmethod\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"gbpReferenceNo\"\r\n\r\n$checkoutgbpReferenceNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"amount\"\r\n\r\n$checkoutamount\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"date\"\r\n\r\n$checkoutdate\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"time\"\r\n\r\n$checkouttime\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"shoprefNo\"\r\n\r\n$checkoutshoprefNo\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"serialID\"\r\n\r\n$checkoutserialID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"checkoutID\"\r\n\r\n$checkoutID\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--";
 
-$checkoutReturn = AS_Gbprimepay_API::afterpayCheckout("$url", $checkout_configkey, $field, 'POST');
-
-            }else{
+                $checkoutReturn = AS_Gbprimepay_API::afterpayCheckout("$url", $checkout_configkey, $field, 'POST');
+            } else {
                 $transactionStatus = 'Mobile Banking Payment failed.';
                 logTransaction($gatewayParams['name'], $postData, $transactionStatus);
             }
-
-  }
-}
+        }
+    }
 
 }
